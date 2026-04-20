@@ -42,40 +42,51 @@
 
 ```
 import random
+
 class MedicinePrescribingAgent:
     def __init__(self):
         self.performance = 0
-        self.rooms = ["Room1", "Room2"]
-        self.current_room = random.choice(self.rooms) 
-# agent starts in random room
-def sense_environment(self):
-    # Randomly generate temperature for patient in current room
-    # (simulate 97–102 degrees)
-    temperature = round(random.uniform(97, 102), 1)
-    return temperature
-def prescribe_medicine(self, temperature):
-    if temperature > 98.5:  # unhealthy patient
-        print(f"Patient in {self.current_room} has fever ({temperature}°F). Prescribing medicine.")
-        self.performance += 10 # performance increment for treatment
-    else:
-        print(f"Patient in {self.current_room} is healthy ({temperature}°F). No medicine required.")
-def move_to_other_room(self):
-    other_room = [room for room in self.rooms if room != self.current_room][0]
-    print(f"Moving from {self.current_room} to {other_room}.")
-    self.current_room = other_room
-    self.performance -= 1  # penalty for movement
-def run_agent(self, cycles=5):
-    for _ in range(cycles):
-        # Sense environment
+        self.rooms = ["Room 1", "Room 2"]
+        self.current_room = "Room 1" 
+        self.environment = {}
+
+    def sense_environment(self):
+        # generate random temperature (97–102°F)
+        temp = round(random.uniform(97, 102), 1)
+        self.environment[self.current_room] = temp
+        return temp
+
+    def prescribe_medicine(self, temperature):
+        if temperature > 98.5:
+            print(f"Treatment given in {self.current_room}.")
+            self.performance += 10
+        else:
+            print(f"No treatment needed in {self.current_room}.")
+
+    def move_to_other_room(self):
+        next_room = "Room 2" if self.current_room == "Room 1" else "Room 1"
+        print(f"\nMoving from {self.current_room} to {next_room}...")
+        self.current_room = next_room
+        self.performance -= 1
+
+    def run(self):
+        print("Medicine Prescribing Agent Simulation Started\n")
+        # Room 1
         temp = self.sense_environment()
-        # Prescribe if needed
+        print(f"Checking {self.current_room}... Patient temperature: {temp}°F")
         self.prescribe_medicine(temp)
-        # Move to another room and repeat
+        # Move to Room 2
         self.move_to_other_room()
-        print(f"Current Performance: {self.performance}\n")
+        # Room 2
+        temp = self.sense_environment()
+        print(f"Checking {self.current_room}... Patient temperature: {temp}°F")
+        self.prescribe_medicine(temp)
+        print("\nSimulation Complete!")
+        print(f"Final Performance Score: {self.performance}")
+        print(f"Environment State: {self.environment}")
+
 agent = MedicinePrescribingAgent()
-agent.run_agent(cycles=6)  # run for 6 iterations
-print("Final Performance Score:", agent.performance)
+agent.run()
 ```
 OUTPUT:
 <img width="849" height="482" alt="image" src="https://github.com/user-attachments/assets/b4aaf6b5-bcce-409a-8ebd-d7e4d3809a8b" />
