@@ -45,42 +45,33 @@ import random
 
 class MedicinePrescribingAgent:
     def __init__(self):
-        self.performance = 0
         self.rooms = ["Room 1", "Room 2"]
-        self.current_room = "Room 1" 
+        self.performance = 0
         self.environment = {}
+        self.unhealthy_room = random.choice(self.rooms)  #one unhealthy room
 
-    def sense_environment(self):
-        # generate random temperature (97–102°F)
-        temp = round(random.uniform(97, 102), 1)
-        self.environment[self.current_room] = temp
-        return temp
-
-    def prescribe_medicine(self, temperature):
-        if temperature > 98.5:
-            print(f"Treatment given in {self.current_room}.")
-            self.performance += 10
-        else:
-            print(f"No treatment needed in {self.current_room}.")
-
-    def move_to_other_room(self):
-        next_room = "Room 2" if self.current_room == "Room 1" else "Room 1"
-        print(f"\nMoving from {self.current_room} to {next_room}...")
-        self.current_room = next_room
-        self.performance -= 1
+    def get_temperature(self, room):
+        return round(
+            random.uniform(99, 102) if room == self.unhealthy_room
+            else random.uniform(97, 98.5), 1
+        )
 
     def run(self):
         print("Medicine Prescribing Agent Simulation Started\n")
-        # Room 1
-        temp = self.sense_environment()
-        print(f"Checking {self.current_room}... Patient temperature: {temp}°F")
-        self.prescribe_medicine(temp)
-        # Move to Room 2
-        self.move_to_other_room()
-        # Room 2
-        temp = self.sense_environment()
-        print(f"Checking {self.current_room}... Patient temperature: {temp}°F")
-        self.prescribe_medicine(temp)
+        for i, room in enumerate(self.rooms):
+            temp = self.get_temperature(room)
+            self.environment[room] = temp
+            print(f"Checking {room}... Patient temperature: {temp}°F")
+            if temp > 98.5:
+                print(f"Treatment given in {room}.")
+                self.performance += 10
+            else:
+                print(f"No treatment needed in {room}.")
+            
+            if i == 0:
+                print(f"\nMoving from {room} to {self.rooms[1]}...")
+                self.performance -= 1
+        
         print("\nSimulation Complete!")
         print(f"Final Performance Score: {self.performance}")
         print(f"Environment State: {self.environment}")
@@ -89,7 +80,8 @@ agent = MedicinePrescribingAgent()
 agent.run()
 ```
 OUTPUT:
-<img width="849" height="482" alt="image" src="https://github.com/user-attachments/assets/b4aaf6b5-bcce-409a-8ebd-d7e4d3809a8b" />
+<img width="594" height="459" alt="image" src="https://github.com/user-attachments/assets/006fe794-1661-4921-a211-6de76b7fe612" />
+
 
 RESULT:
 Thus the AI agent is developed successfully
