@@ -44,40 +44,24 @@
 import random
 
 class MedicinePrescribingAgent:
-    def __init__(self):
-        self.rooms = ["Room 1", "Room 2"]
-        self.performance = 0
-        self.environment = {}
-        self.unhealthy_room = random.choice(self.rooms)  #one unhealthy room
+    def __init__(s):
+        s.rooms=["Room 1","Room 2"];s.performance=0;s.environment={}
+        s.unhealthy_room=random.choice(s.rooms)
 
-    def get_temperature(self, room):
-        return round(
-            random.uniform(99, 102) if room == self.unhealthy_room
-            else random.uniform(97, 98.5), 1
-        )
+    def get_temperature(s,r):
+        return round(random.uniform(99,102)if r==s.unhealthy_room else random.uniform(97,98.5),1)
 
-    def run(self):
+    def run(s):
         print("Medicine Prescribing Agent Simulation Started\n")
-        for i, room in enumerate(self.rooms):
-            temp = self.get_temperature(room)
-            self.environment[room] = temp
-            print(f"Checking {room}... Patient temperature: {temp}°F")
-            if temp > 98.5:
-                print(f"Treatment given in {room}.")
-                self.performance += 10
-            else:
-                print(f"No treatment needed in {room}.")
-            
-            if i == 0:
-                print(f"\nMoving from {room} to {self.rooms[1]}...")
-                self.performance -= 1
-        
-        print("\nSimulation Complete!")
-        print(f"Final Performance Score: {self.performance}")
-        print(f"Environment State: {self.environment}")
+        for i,r in enumerate(s.rooms):
+            t=s.get_temperature(r);s.environment[r]=t
+            print(f"Checking {r}... Patient temperature: {t}°F")
+            print(f"{'Treatment given'if t>98.5 else 'No treatment needed'} in {r}.")
+            s.performance+=10 if t>98.5 else 0
+            if i<1:print(f"\nMoving from {r} to {s.rooms[1]}...");s.performance-=1
+        print(f"\nSimulation Complete!\nFinal Performance Score: {s.performance}\nEnvironment State: {s.environment}")
 
-agent = MedicinePrescribingAgent()
-agent.run()
+MedicinePrescribingAgent().run()
 ```
 OUTPUT:
 <img width="594" height="459" alt="image" src="https://github.com/user-attachments/assets/006fe794-1661-4921-a211-6de76b7fe612" />
