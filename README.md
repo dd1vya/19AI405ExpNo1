@@ -45,20 +45,31 @@ import random
 
 class MedicinePrescribingAgent:
     def __init__(s):
-        s.rooms=["Room 1","Room 2"];s.performance=0;s.environment={}
+        s.rooms=["Room 1","Room 2"]
+        s.performance=0
+        s.environment={}
         s.unhealthy_room=random.choice(s.rooms)
 
     def get_temperature(s,r):
-        return round(random.uniform(99,102)if r==s.unhealthy_room else random.uniform(97,98.5),1)
+        if r==s.unhealthy_room:
+            return round(random.uniform(99,102),1)
+        else:
+            return round(random.uniform(97,98.5),1)
 
     def run(s):
         print("Medicine Prescribing Agent Simulation Started\n")
         for i,r in enumerate(s.rooms):
-            t=s.get_temperature(r);s.environment[r]=t
+            t=s.get_temperature(r)
+            s.environment[r]=t
             print(f"Checking {r}... Patient temperature: {t}°F")
-            print(f"{'Treatment given'if t>98.5 else 'No treatment needed'} in {r}.")
-            s.performance+=10 if t>98.5 else 0
-            if i<1:print(f"\nMoving from {r} to {s.rooms[1]}...");s.performance-=1
+            if t>98.5:
+                print(f"Treatment given in {r}.")
+                s.performance+=10
+            else:
+                print(f"No treatment needed in {r}.")
+            if i<1:
+                print(f"\nMoving from {r} to {s.rooms[1]}...")
+                s.performance-=1
         print(f"\nSimulation Complete!\nFinal Performance Score: {s.performance}\nEnvironment State: {s.environment}")
 
 MedicinePrescribingAgent().run()
